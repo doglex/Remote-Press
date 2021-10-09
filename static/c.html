@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>远程点击空格</title>
+    <script src="./vue.js"></script>
+    <script src="./axios.js"></script>
+    <style type="text/css">
+        .button {
+        background-color: #6a4caf; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 41px;
+    }
+    </style>
+</head>
+<body style="font-size: 36px">
+<div id="app-5">
+    <p>{{ message }}</p>
+    <button v-on:click="reverseMessage" class="button">反转消息</button>
+</div>
+<script>
+    var app5 = new Vue({
+        el: '#app-5',
+        data: {
+            message: 1
+        },
+        methods: {
+            reverseMessage: function () {
+                this.message += 1 ;
+                axios.get("/space")
+            }
+        }
+    })
+</script>
+</body>
+</html>
