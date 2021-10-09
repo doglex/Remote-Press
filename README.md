@@ -19,3 +19,4 @@ go build && .\remote-press.exe
 + 增加其他功能
 + 优化界面
 + 取到外网地址
++ 从黑框到GUI
