@@ -2,17 +2,19 @@ package main
 
 import (
 	"fmt"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/micmonay/keybd_event"
 	qrcode "github.com/skip2/go-qrcode"
 	"math/rand"
+	"runtime"
 	"time"
-
-	"github.com/labstack/echo/v4"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	var port = 9100 + rand.Intn(300)
+	//var port = 9100 + rand.Intn(300)
+	var port = 9200
 	var host = GetOutboundIP()
 	var url = fmt.Sprintf("http://%v:%v/x", host, port)
 
@@ -37,6 +39,20 @@ func main() {
 	e.GET("/space", func(c echo.Context) error {
 		fmt.Println("click space @", time.Now())
 		//return c.String(http.StatusOK, "clicked")
+		kb, err := keybd_event.NewKeyBonding()
+		if err != nil {
+			panic(err)
+		}
+		// For linux, it is very important to wait 2 seconds
+		if runtime.GOOS == "linux" {
+			time.Sleep(2 * time.Second)
+		}
+		// Select keys to be pressed
+		kb.SetKeys(keybd_event.VK_SPACE)
+		kb.Press()
+		time.Sleep(10 * time.Millisecond)
+		kb.Release()
+
 		return c.JSON(200, "ok")
 	})
 	e.Logger.Fatal(e.Start(":" + fmt.Sprint(port)))
